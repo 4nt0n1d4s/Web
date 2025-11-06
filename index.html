@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .task { display: flex; align-items: center; margin-bottom: 10px; }
+    .task input[type="text"] { margin-right: 10px; }
+    .task button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Task Manager</h1>
+  <div>
+    <input id="new-task" type="text" placeholder="Enter new task" />
+    <button id="add-task-btn">Add Task</button>
+  </div>
+  <div id="tasks-container"></div>
+
+  <script>
+    const baseURL = 'https://dummyjson.com/todos';
+
+    // Получение и отображение всех задач
+    async function getTasks() {
+      try {
+        const response = await fetch(baseURL);
+        const data = await response.json();
+        displayTasks(data.todos);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    }
+
+    // Функция отображения задач в DOM
+    function displayTasks(tasks) {
+      const container = document.getElementById('tasks-container');
+      container.innerHTML = ''; // Очистка контейнера
+
+      tasks.forEach(task => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task';
+
+        const taskInput = document.createElement('input');
+        taskInput.type = 'text';
+        taskInput.value = task.todo;
+        taskInput.dataset.id = task.id;
+
+        const updateButton = document.createElement('button');
+        updateButton.textContent = 'Update';
+        updateButton.addEventListener('click', () => updateTask(task.id, taskInput.value));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteTask(task.id));
+
+        taskDiv.appendChild(taskInput);
+        taskDiv.appendChild(updateButton);
+        taskDiv.appendChild(deleteButton);
+
+        container.appendChild(taskDiv);
+      });
+    }
+
+    // Создание новой задачи
+    async function addTask() {
+      const taskText = document.getElementById('new-task').value;
+      if (!taskText) return alert('Please enter a task');
+
+      try {
+        const response = await fetch(baseURL + '/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ todo: taskText, completed: false, userId: 1 }),
+        });
+        const newTask = await response.json();
+        getTasks(); // Перезагрузка задач после добавления
+        document.getElementById('new-task').value = ''; // Очистка поля ввода
+      } catch (error) {
+        console.error('Error creating task:', error);
+      }
+    }
+
+    // Обновление задачи
+    async function updateTask(taskId, updatedText) {
+      try {
+        const response = await fetch(`${baseURL}/${taskId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ todo: updatedText, completed: true }),
+        });
+        await response.json();
+        getTasks(); // Перезагрузка задач после обновления
+      } catch (error) {
+        console.error('Error updating task:', error);
+      }
+    }
+
+    // Удаление задачи
+    async function deleteTask(taskId) {
+      try {
+        const response = await fetch(`${baseURL}/${taskId}`, { method: 'DELETE' });
+        await response.json();
+        getTasks(); // Перезагрузка задач после удаления
+      } catch (error) {
+        console.error('Error deleting task:', error);
+      }
+    }
+
+    // Обработчик для кнопки добавления задачи
+    document.getElementById('add-task-btn').addEventListener('click', addTask);
+
+    // Загрузка задач при загрузке страницы
+    getTasks();
+  </script>
+</body>
+</html>

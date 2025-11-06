@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD with DummyJSON</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        table, th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        form { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>CRUD Application</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="data-table"></tbody>
+    </table>
+
+    <form id="data-form">
+        <input type="hidden" id="id" />
+        <input type="text" id="title" placeholder="Title" required />
+        <input type="text" id="description" placeholder="Description" required />
+        <button type="submit">Save</button>
+    </form>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD example</title>
+    <style>
+        table, tr, th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Список</h2>
+    <p>Добавьте пользователя</p>
+    <div>
+        <input type="text" placeholder="Фамиля">
+        <input type="text" placeholder="Имя">
+        <input type="number" placeholder="Возраст">
+        <select>
+            <option>Должность</option>
+            <option value="Студент">Student</option>
+            <option value="Профессор">Professor</option>
+        </select>
+        <button>Добавить</button>
+    </div>
+    <table style="margin-top: 15px">
+        <thead>
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Возраст</th>
+                <th>Должность</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Джордан</td>
+                <td>Майкл</td>
+                <td>61</td>
+                <td>Professor</td>
+                <td>
+                    <button>edit</button>
+                    <button>delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
